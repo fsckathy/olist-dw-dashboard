@@ -3,7 +3,7 @@
 > SQL Server data warehouse for the [Brazilian E-Commerce Public Dataset by Olist](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce), built with the medallion architecture (bronze, silver, gold) and modeled as a star schema for Power BI.
 > It includes ETL monitoring, automated data quality checks and a Python step that standardizes Brazilian city names against the official IBGE registry.
 
-The dataset has about 100k orders placed between 2016 and 2018 on Olist, a marketplace that connects small sellers to the main Brazilian e-commerce channels.
+The dataset has about 100k orders placed between 2016 and 2018 on Olist, a marketplace that connects sellers to the main Brazilian e-commerce channels.
 
 ## Dashboard Preview
 
@@ -11,7 +11,7 @@ The dataset has about 100k orders placed between 2016 and 2018 on Olist, a marke
 
 ## Project Overview
 
-The raw CSVs come with problems that block reliable reporting: untyped text, duplicated geolocation points, inconsistent city spellings and delivery dates spread across several columns. This project turns them into a clean, documented star schema that a Power BI report can read directly.
+The raw CSVs come with problems that block reliable reporting: untyped text, duplicated geolocation points, inconsistent city spellings and delivery dates spread across several columns. This project turns them into a clean, documented star schema that a Power BI report can read directly..
 
 ## Business Questions
 
@@ -24,12 +24,11 @@ The warehouse is modeled to answer:
 
 ## Highlights
 
-- **Medallion pipeline in T-SQL.** One stored procedure per layer, all idempotent. Every run is logged in `etl.batch_log` and `etl.table_load_log`: duration, rows loaded and rejected, and the error message when a load fails.
-- **Atomic gold load.** The gold layer loads in a single transaction, so Power BI never reads a partial load.
-- **Star schema.** 6 dimensions and 4 fact tables with integer surrogate keys, enforced foreign keys and `yyyymmdd` date keys. Surrogate keys are deterministic: the same data always gets the same keys.
-- **City name standardization.** Cities are typed by hand in the source (`sao paulo`, `são paulo`, `sp`, `sao paulo - sp`, even zip codes). A rule-based matcher (exact, alias, spelling skeleton, Jaro-Winkler fuzzy match, zip-prefix fallback) maps **98.9%** of 15,249 city/state/zip combinations to an official IBGE municipality.
-- **Data quality as code.** More than 70 checks across the three layers: row reconciliation, PK/FK integrity, domain and range rules, money totals reconciled to the cent, and date logic. Each check has an `ERROR` or `WARNING` severity.
-- **Thin BI layer.** Power BI reads from `dw` views that expose only the columns the report uses.
+- **Medallion pipeline in T-SQL.** One stored procedure per layer, all idempotent. Every run is logged in 'etl.batch_log' and 'etl.table_load_log'.
+- **Star schema.** 6 dimensions and 4 fact tables with integer surrogate keys, enforced foreign keys and 'yyyymmdd' date keys. Surrogate keys are deterministic: the same data always gets the same keys.
+- **City name standardization.** Cities are typed by hand in the source. A rule-based matcher (exact, alias, spelling skeleton, Jaro-Winkler fuzzy match, zip-prefix fallback) maps **98.9%** of 15,249 city/state/zip combinations to an official IBGE municipality.
+- **Data quality as code.** More than 70 checks across the three layers: row reconciliation, PK/FK integrity, domain and range rules, money totals reconciled, and date logic.
+- **Thin BI layer.** Power BI reads from 'dw' views that expose only the columns the report uses.
 
 ## Architecture
 
@@ -48,9 +47,9 @@ flowchart LR
 
 | Layer | Purpose | Details |
 |---|---|---|
-| **bronze** | Raw landing zone, one table per CSV | Every column is `NVARCHAR` and nullable, so any value lands without conversion errors |
+| **bronze** | Raw landing zone, one table per CSV |
 | **silver** | Cleaned, typed and keyed data | Proper types and natural PKs; geolocation outliers removed; one median point per zip; delivery split into approval, seller handling and carrier transit; review sentiment |
-| **gold** | Business-ready star schema | Surrogate keys, SCD type 1 dimensions, display-ready values (English names, title case, `Yes`/`No` flags) |
+| **gold** | Business-ready star schema | Surrogate keys, SCD type 1 dimensions, display-ready values |
 | **dw** | Power BI interface | One view per model table, no business logic |
 | **etl** | Observability | Batch and table load logs written by every procedure |
 
@@ -90,14 +89,14 @@ erDiagram
 
 Design decisions:
 
-- **Facts relate only to dimensions.** Facts are never joined to each other. A shared integer `order_key` lets Power BI count distinct orders without loading the 32-character `order_id`.
+- **Facts relate only to dimensions.** Facts are never joined to each other. A shared integer 'order_key' lets Power BI count distinct orders without loading the 32-character 'order_id'.
 - **Dimensions hold only their own attributes.** Activity metrics such as "orders per customer" belong in DAX measures, not in dimension columns.
-- **Role-playing dates.** The purchase date is the active relationship in every fact, so reviews and deliveries line up with sales. The review and delivered dates are inactive relationships, used with `USERELATIONSHIP`.
+- **Role-playing dates.** The purchase date is the active relationship in every fact, so reviews and deliveries line up with sales. The review and delivered dates are inactive relationships, and they require the use of 'USERELATIONSHIP'.
 - **Known source errors are kept and documented, not hidden.** For example, 4 items have 2020 shipping deadlines on 2017 orders.
 
 ## Dashboard Pages
 
-The report has three pages, linked by a navigation bar. Each visual has a dynamic subtitle that states its takeaway for the current filters.
+The report has three 3 pages, linked by a navigation bar. Each visual has a dynamic subtitle that states its takeaway for the current filters.
 
 ### Sales Overview
 
@@ -149,7 +148,7 @@ olist-dw-dashboard/
 
 ## Data Sources
 
-- Olist, [Brazilian E-Commerce Public Dataset](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce) (Kaggle `olistbr/brazilian-ecommerce`).
+- Olist, [Brazilian E-Commerce Public Dataset](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce) (Kaggle 'olistbr/brazilian-ecommerce').
 - IBGE, [Localidades API](https://servicodados.ibge.gov.br/api/docs/localidades), list of Brazilian municipalities.
 
 ## Author
