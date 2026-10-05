@@ -47,7 +47,7 @@ flowchart LR
 
 | Layer | Purpose | Details |
 |---|---|---|
-| **bronze** | Raw landing zone, one table per CSV |
+| **bronze** | Raw landing zone, one table per CSV | All columns are 'NVARCHAR' and nullable, so values land without conversion errors |
 | **silver** | Cleaned, typed and keyed data | Proper types and natural PKs; geolocation outliers removed; one median point per zip; delivery split into approval, seller handling and carrier transit; review sentiment |
 | **gold** | Business-ready star schema | Surrogate keys, SCD type 1 dimensions, display-ready values |
 | **dw** | Power BI interface | One view per model table, no business logic |
