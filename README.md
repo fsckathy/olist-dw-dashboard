@@ -111,14 +111,8 @@ The report has three pages, linked by a navigation bar. Each visual has a dynami
 
 ![Delivery & Reviews](screenshots/03_delivery_reviews.png)
 
-## Key Business Insights
-
-Figures for the full period (Sep 2016 to Aug 2018), excluding canceled and unavailable orders.
-
-- **Revenue is concentrated in the Southeast and in few sellers.** Net revenue reached R$ 13.49M from 98,199 orders (average order value R$ 137.42). The Southeast accounts for 65.4% of it, and 18% of sellers (class A) generate 80%.
-- **Big tickets drive the total.** The typical item costs R$ 74.90, but the mean is R$ 120.38: 7.4% of items, priced above R$ 277, bring 35.4% of net revenue.
-- **Late shipping puts key sellers at risk.** 171 class A sellers ship late more often than the 9.3% average, and they hold 24.7% of net revenue. Freight equals 16.6% of revenue, and states in class C pay R$ 34.20 per item, 1.8x class A.
-- **Late deliveries cost about 2 review stars.** Orders delivered on time score 4.3 on average and late ones 2.3. 6.8% of orders arrive late and 1.8% never arrive. The carrier leg takes 9.3 of the 12.5 average delivery days, and the North waits the longest (19.2 carrier days).
+## Explore the Report
+[View the Interactive Report]([https://app.powerbi.com/groups/me/reports/3532b848-1f71-43a7-ad52-81e25d8ee5fc?ctid=8b6c959c-d7c4-406c-9e6b-cac0b71de24e&pbi_source=linkShare)
 
 ## Repository Structure
 
