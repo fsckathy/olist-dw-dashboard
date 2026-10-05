@@ -6,17 +6,16 @@ PURPOSE:
     Loads the 9 Olist CSV files into the bronze tables, as-is.
     Idempotent: each table is truncated before its BULK INSERT.
     Each table is logged in etl.table_load_log; the run in etl.batch_log.
-    Tables are loaded one by one (no wrapping transaction): a failure stops the run, is
+    Tables are loaded one by one: a failure stops the run, is
     logged with the failing table, and the error is re-raised to the caller.
 
 LOAD OPTIONS:
-    FORMAT = 'CSV'       quoted fields with commas / line breaks (review comments)
+    FORMAT = 'CSV'       quoted fields with commas / line breaks
     CODEPAGE = '65001'   UTF-8, keeps Portuguese accents
     ROWTERMINATOR        reviews and category translation end lines with CRLF; others LF
 
 PARAMETERS:
-    @data_path  folder with the CSV files, as seen by the SQL Server service
-                (e.g. N'C:\...\olist-dw-dashboard\Data\')
+    @data_path  folder with the CSV files, as seen by the SQL Server service.
 
 USAGE:
     EXEC bronze.load_bronze @data_path = N'C:\path\to\Data\';
@@ -44,7 +43,6 @@ BEGIN
 
     IF RIGHT(@data_path, 1) <> N'\' SET @data_path += N'\';
 
-    -- Source file of each bronze table, in load order
     DECLARE @files TABLE (
         seq            TINYINT       NOT NULL PRIMARY KEY,
         table_name     VARCHAR(100)  NOT NULL,

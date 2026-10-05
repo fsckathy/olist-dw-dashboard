@@ -18,10 +18,10 @@ PURPOSE:
 ONE-TIME SETUP (deploy, in this order):
     sql/00_init/01_create_database_schemas.sql
     sql/00_init/02_create_etl_monitoring_tables.sql
-    sql/bronze/ddl_bronze_tables.sql   + sql/bronze/load_bronze.sql
-    sql/silver/ddl_silver_tables.sql   + sql/silver/load_silver.sql
+    sql/bronze/ddl_bronze_tables.sql + sql/bronze/load_bronze.sql
+    sql/silver/ddl_silver_tables.sql + sql/silver/load_silver.sql
     sql/silver/ddl_city_map.sql
-    sql/gold/ddl_gold_tables.sql       + sql/gold/load_gold.sql
+    sql/gold/ddl_gold_tables.sql + sql/gold/load_gold.sql
 
 FIRST RUN:
     run this script (bronze, silver, gold), then
@@ -29,8 +29,8 @@ FIRST RUN:
     then EXEC gold.load_gold (or run this script again).
 
 USAGE:
-    Set @data_path to the folder with the Olist CSV files (as seen by the SQL Server
-    service) and run this script. Quality checks: the scripts in the tests folder.
+    Set @data_path to the folder with the Olist CSV files and run this script. 
+    Quality checks: the scripts in the tests folder.
 ===============================================================================
 */
 USE OlistDW;
@@ -38,7 +38,6 @@ GO
 
 SET NOCOUNT ON;
 
--- Folder with the 9 Olist CSV files (Kaggle olistbr/brazilian-ecommerce)
 DECLARE @data_path NVARCHAR(260) = N'C:\Users\Pessoal\Documents\GitHub\olist-dw-dashboard\Data\';
 
 DECLARE
@@ -97,7 +96,6 @@ BEGIN CATCH
     THROW;
 END CATCH;
 
--- Summary of this run (one row per layer)
 SELECT
     b.batch_id,
     b.layer_name,

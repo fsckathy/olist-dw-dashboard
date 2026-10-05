@@ -10,12 +10,12 @@ PURPOSE:
 RULES:
     - Required columns use strict CONVERT: a malformed row stops the load instead of being
       silently dropped. Optional columns use TRY_CONVERT on blank-safe values.
-    - Text: trimmed; states uppercased; cities lowercase as in the source (gold formats them).
-    - Geolocation: points outside Brazil (incl. oceanic islands) dropped, coordinates rounded
+    - Text: trimmed; states uppercased; cities lowercase as in the source.
+    - Geolocation: points outside Brazil dropped, coordinates rounded
       to 6 decimals, exact duplicates removed.
     - zip_location: per zip, points > 50 km AND > 10x the typical distance from the zip median
       are outliers (zips with >= 3 points); coordinates = median of the remaining points.
-    - Reviews: blank or junk comments ('?', '...') become NULL; line breaks and tabs inside
+    - Reviews: blank or junk comments become NULL; line breaks and tabs inside
       comments become spaces.
     - Orders: delivery stages in calendar days (approval + seller handling + carrier transit
       = delivery_days); a stage with out-of-order source dates is NULL, not negative.
@@ -96,7 +96,7 @@ BEGIN
           AND t.lng BETWEEN -73.990556 AND -28.835833; --official source: IBGE
 
         SET @rows_loaded = @@ROWCOUNT;
-        SET @rows_rejected = @rows_source - @rows_loaded;  -- outside Brazil + duplicates
+        SET @rows_rejected = @rows_source - @rows_loaded;  
         EXEC etl.log_table_load @batch_id, 'silver', @table_name, @start_time, @rows_loaded,
                                 @rows_rejected;
 
@@ -229,7 +229,6 @@ BEGIN
         SELECT TRIM(t.product_category_name), TRIM(t.product_category_name_english), @batch_id
         FROM bronze.product_category_name_translation AS t;
 
-        -- Categories used by products (or the blank-category placeholder) missing from the file
         INSERT INTO silver.product_category_name_translation
             (product_category_name, product_category_name_english, dwh_batch_id)
         SELECT m.product_category_name, m.product_category_name_english, @batch_id
@@ -330,7 +329,7 @@ BEGIN
             TRIM(p.order_id),
             CONVERT(SMALLINT, p.payment_sequential),
             LOWER(TRIM(p.payment_type)),
-            CONVERT(SMALLINT, p.payment_installments),  -- 2 rows have 0 in the source (kept)
+            CONVERT(SMALLINT, p.payment_installments),  
             CONVERT(DECIMAL(10, 2), p.payment_value),
             @batch_id
         FROM bronze.olist_order_payments_ds AS p;

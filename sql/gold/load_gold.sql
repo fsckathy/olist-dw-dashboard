@@ -9,10 +9,10 @@ PURPOSE:
     data on failure); the run and the failure are logged in etl.batch_log.
 
 LOAD ORDER:
-    1. delete facts, then dimensions (foreign keys)
-    2. dimensions: calendar, order status, payment method, customer, seller, product
-    3. #order_keys: dimension keys of every order, shared by the four facts
-    4. facts: sales, delivery, reviews, payments
+    1. delete facts, then dimensions (foreign keys)ç
+    2. dimensions: calendar, order status, payment method, customer, seller, productç
+    3. #order_keys: dimension keys of every order, shared by the four factsç
+    4. facts: sales, delivery, reviews, payments.
 
 CITIES:
     Customer and seller cities get the official IBGE name and state from silver.city_map
@@ -44,7 +44,6 @@ BEGIN
         @end_date      DATE,
         @error_message NVARCHAR(4000);
 
-    -- Brazilian states -> region (IBGE), English names
     DECLARE @regions TABLE (uf CHAR(2) NOT NULL PRIMARY KEY, region VARCHAR(15) NOT NULL);
     INSERT INTO @regions (uf, region)
     VALUES
@@ -79,7 +78,6 @@ BEGIN
 
         -- =====================================================================
         -- 2.1 dim_calendar: full years covering the order and review event dates
-        -- (shipping_limit_date is left out: 4 source errors in 2020 would add empty years)
         -- =====================================================================
         SET @table_name = 'dim_calendar';
         SET @start_time = SYSDATETIME();
@@ -118,7 +116,7 @@ BEGIN
             DATEFROMPARTS(YEAR(x.d), MONTH(x.d), 1),  
             FORMAT(x.d, 'yyyy-MM'),
             DAY(x.d),
-            (DATEPART(WEEKDAY, x.d) + @@DATEFIRST - 2) % 7 + 1,  -- Monday = 1, any DATEFIRST
+            (DATEPART(WEEKDAY, x.d) + @@DATEFIRST - 2) % 7 + 1, 
             FORMAT(x.d, 'dddd', 'en-US')
         FROM days AS x;
 
@@ -203,7 +201,6 @@ BEGIN
             z.latitude,
             z.longitude
         FROM latest AS l
-        -- Official IBGE name (and state) of the city; source spelling when not mapped
         LEFT JOIN silver.city_map AS m
             ON  m.city_raw = l.customer_city
             AND m.state_raw = l.customer_state
@@ -237,7 +234,6 @@ BEGIN
             z.latitude,
             z.longitude
         FROM silver.olist_sellers_ds AS s
-        -- Official IBGE name (and state) of the city; source spelling when not mapped
         LEFT JOIN silver.city_map AS m
             ON  m.city_raw = s.seller_city
             AND m.state_raw = s.seller_state
@@ -281,7 +277,7 @@ BEGIN
 
         SELECT
             o.order_id,
-            ROW_NUMBER() OVER (ORDER BY o.order_id) AS order_key,  -- deterministic, all orders
+            ROW_NUMBER() OVER (ORDER BY o.order_id) AS order_key, 
             dc.customer_key,
             st.order_status_key,
             YEAR(o.order_purchase_timestamp) * 10000 + MONTH(o.order_purchase_timestamp) * 100
@@ -319,7 +315,6 @@ BEGIN
             CAST(i.shipping_limit_date AS DATE),
             i.price,
             i.freight_value,
-            -- Seller deadline is per item (orders can have several sellers)
             CASE WHEN o.order_delivered_carrier_date IS NULL THEN NULL
                  WHEN o.order_delivered_carrier_date > i.shipping_limit_date THEN 'Yes'
                  ELSE 'No'
@@ -401,7 +396,6 @@ BEGIN
             r.review_sentiment,
             CASE WHEN r.review_comment_message IS NOT NULL THEN 'Yes' ELSE 'No' END,
             r.review_answer_hours,
-            -- Survey before the customer got the order: delivery complaints, not product ones
             CASE WHEN o.order_delivered_customer_date IS NULL
                    OR CAST(r.review_creation_date AS DATE) < CAST(o.order_delivered_customer_date AS DATE)
                  THEN 'Yes' ELSE 'No'

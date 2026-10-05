@@ -17,7 +17,7 @@ USE master;
 GO
 
 -- ----------------------------------------------------------------------------
--- 1.0 Create Database (Idempotent)
+-- 1.0 Create Database
 -- ----------------------------------------------------------------------------
 IF NOT EXISTS (SELECT 1 FROM sys.databases WHERE name = 'OlistDW')
 BEGIN
@@ -35,7 +35,7 @@ ALTER DATABASE OlistDW SET RECOVERY SIMPLE;
 GO
 
 -- ----------------------------------------------------------------------------
--- 2.0 Create Schemas (Idempotent)
+-- 2.0 Create Schemas
 -- ----------------------------------------------------------------------------
 IF NOT EXISTS (SELECT 1 FROM sys.schemas WHERE name = 'bronze')
     EXEC ('CREATE SCHEMA bronze');

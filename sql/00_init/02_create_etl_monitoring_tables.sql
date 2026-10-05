@@ -10,7 +10,7 @@ TABLES:
     etl.batch_log        - one row per layer execution (bronze, silver or gold)
     etl.table_load_log   - one row per table loaded within a batch
 
-PROCEDURES (used by the load procedures, keep the logging code in one place):
+PROCEDURES:
     etl.start_batch      - opens a batch (status RUNNING) and returns its batch_id
     etl.end_batch        - closes a batch as SUCCESS or FAILED
     etl.log_table_load   - records one table load and prints a short summary

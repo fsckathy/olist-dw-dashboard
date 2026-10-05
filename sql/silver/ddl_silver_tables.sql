@@ -4,14 +4,14 @@ DDL Script: Create Silver Tables
 ===============================================================================
 PURPOSE:
     Cleaned, typed and keyed copy of bronze, plus derived columns and one derived table:
-        - proper data types (CHAR ids, DATETIME2, DECIMAL money)
-        - primary keys on every table (natural keys of the source)
-        - source spelling fixed (product_name_lenght -> product_name_length)
+        - proper data types;
+        - primary keys on every table;
+        - source spelling fixed (product_name_lenght -> product_name_length);
         - derived columns: delivery_days, approval_hours, seller_handling_days,
           carrier_transit_days, delivery_delay_days, late_delivery_flag, review_sentiment,
-          review_answer_hours, product_volume_cm3
-        - silver.zip_location: one row per zip prefix with clean median coordinates
-        - dwh_batch_id / dwh_load_date on every table: which etl batch wrote the row
+          review_answer_hours, product_volume_cm3;
+        - silver.zip_location: one row per zip prefix with clean median coordinates;
+        - dwh_batch_id / dwh_load_date on every table: which etl batch wrote the row.
     No foreign keys between silver tables (they are truncated and reloaded independently);
     referential integrity is verified by tests/silver_quality_checks.sql.
     Drops and recreates the tables.
@@ -79,7 +79,7 @@ GO
 
 -- ----------------------------------------------------------------------------
 -- TABLE 4: silver.olist_order_items_ds
--- One row per unit sold (Olist has no quantity column).
+-- One row per unit sold.
 -- ----------------------------------------------------------------------------
 DROP TABLE IF EXISTS silver.olist_order_items_ds;
 CREATE TABLE silver.olist_order_items_ds (
@@ -101,7 +101,7 @@ GO
 
 -- ----------------------------------------------------------------------------
 -- TABLE 5: silver.olist_order_payments_ds
--- One row per payment (card + voucher = 2 rows); installments are a column.
+-- One row per payment (card + voucher = 2 rows).
 -- ----------------------------------------------------------------------------
 DROP TABLE IF EXISTS silver.olist_order_payments_ds;
 CREATE TABLE silver.olist_order_payments_ds (
@@ -126,12 +126,12 @@ CREATE TABLE silver.olist_order_reviews_ds (
     review_id               CHAR(32)      NOT NULL,
     order_id                CHAR(32)      NOT NULL,
     review_score            TINYINT       NOT NULL,
-    review_sentiment        VARCHAR(10)   NOT NULL,  -- Positive (4-5) / Neutral (3) / Negative (1-2)
+    review_sentiment        VARCHAR(10)   NOT NULL,  
     review_comment_title    NVARCHAR(200) NULL,
     review_comment_message  NVARCHAR(MAX) NULL,
     review_creation_date    DATETIME2(0)  NOT NULL,
     review_answer_timestamp DATETIME2(0)  NOT NULL,
-    review_answer_hours     DECIMAL(10, 2) NOT NULL,  -- survey sent -> customer answer
+    review_answer_hours     DECIMAL(10, 2) NOT NULL,  
     dwh_batch_id            INT           NOT NULL,
     dwh_load_date           DATETIME2(0)  NOT NULL CONSTRAINT df_silver_order_reviews_load DEFAULT SYSDATETIME(),
 
@@ -176,7 +176,7 @@ GO
 DROP TABLE IF EXISTS silver.olist_products_ds;
 CREATE TABLE silver.olist_products_ds (
     product_id                 CHAR(32)      NOT NULL,
-    product_category_name      NVARCHAR(100) NULL,      -- NULL in the source for 610 products
+    product_category_name      NVARCHAR(100) NULL,      
     product_name_length        SMALLINT      NULL,
     product_description_length SMALLINT      NULL,
     product_photos_qty         SMALLINT      NULL,

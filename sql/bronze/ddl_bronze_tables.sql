@@ -5,7 +5,7 @@ DDL Script: Create Bronze Tables
 PURPOSE:
     Raw landing zone: one table per Olist CSV file, same column names and order as the file.
     Every column is NVARCHAR and nullable, so any source value lands without conversion
-    errors; typing, keys and validation happen in silver.
+    errors; typing, keys and validation happens in silver.
     Drops and recreates the tables (bronze holds no history: it is reloaded on every run).
 USAGE:
     Run after the 00_init scripts, before bronze/load_bronze.sql.
@@ -70,7 +70,6 @@ GO
 
 -- ----------------------------------------------------------------------------
 -- TABLE 5: bronze.olist_order_reviews_ds  (olist_order_reviews_dataset.csv)
--- Comments may contain commas, quotes and line breaks inside quoted fields.
 -- ----------------------------------------------------------------------------
 DROP TABLE IF EXISTS bronze.olist_order_reviews_ds;
 CREATE TABLE bronze.olist_order_reviews_ds (
@@ -102,7 +101,6 @@ GO
 
 -- ----------------------------------------------------------------------------
 -- TABLE 7: bronze.olist_products_ds  (olist_products_dataset.csv)
--- 'lenght' is kept as in the source file; silver fixes the spelling.
 -- ----------------------------------------------------------------------------
 DROP TABLE IF EXISTS bronze.olist_products_ds;
 CREATE TABLE bronze.olist_products_ds (
