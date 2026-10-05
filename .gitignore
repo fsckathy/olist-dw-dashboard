@@ -1,0 +1,26 @@
+# Raw Kaggle data (olistbr/brazilian-ecommerce), ~120 MB: download it instead of committing
+data/*.csv
+data/*.zip
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Secrets and local config
+.env
+kaggle.json
+
+# Power BI local files, in case a PBIP project is added
+**/.pbi/localSettings.json
+**/.pbi/cache.abf
+*.pbix
+
+# OS / editor
+Thumbs.db
+.DS_Store
+.vscode/
+.idea/
