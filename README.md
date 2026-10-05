@@ -80,7 +80,7 @@ erDiagram
 | `fact_delivery` | one order (logistics stages, delay, late flag) | 99,441 |
 | `fact_reviews` | one review | 99,224 |
 | `fact_payments` | one payment of an order | 103,886 |
-| `dim_customer` | one person (`customer_unique_id`, not the per-order `customer_id`) | 96,096 |
+| `dim_customer` | one person ('customer_unique_id') | 96,096 |
 | `dim_product` | one product | 32,951 |
 | `dim_seller` | one seller | 3,095 |
 | `dim_calendar` | one day, 2016-2018 | 1,096 |
@@ -141,7 +141,7 @@ olist-dw-dashboard/
 
 | Area | Tools |
 |---|---|
-| Database / ETL | SQL Server, T-SQL stored procedures, `BULK INSERT` |
+| Database / ETL | SQL Server, T-SQL stored procedures, 'BULK INSERT' |
 | Data enrichment | Python 3.11, pyodbc, rapidfuzz, IBGE public API |
 | Testing | SQL quality check scripts, pytest |
 | BI | Power BI, DAX |
