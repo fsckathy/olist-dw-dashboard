@@ -112,7 +112,7 @@ The report has three pages, linked by a navigation bar. Each visual has a dynami
 ![Delivery & Reviews](screenshots/03_delivery_reviews.png)
 
 ## Explore the Report
-[View the Interactive Report]([https://app.powerbi.com/groups/me/reports/3532b848-1f71-43a7-ad52-81e25d8ee5fc?ctid=8b6c959c-d7c4-406c-9e6b-cac0b71de24e&pbi_source=linkShare)
+[View the Interactive Report](https://app.powerbi.com/groups/me/reports/3532b848-1f71-43a7-ad52-81e25d8ee5fc?ctid=8b6c959c-d7c4-406c-9e6b-cac0b71de24e&pbi_source=linkShare)
 
 ## Repository Structure
 
