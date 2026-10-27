@@ -54,25 +54,7 @@ flowchart LR
 | **etl** | Observability | Batch and table load logs written by every procedure |
 
 ## Data Model (gold)
-
-```mermaid
-erDiagram
-    dim_calendar ||--o{ fact_sales : order_date_key
-    dim_customer ||--o{ fact_sales : customer_key
-    dim_product  ||--o{ fact_sales : product_key
-    dim_seller   ||--o{ fact_sales : seller_key
-    dim_order_status ||--o{ fact_sales : order_status_key
-    dim_customer ||--o{ fact_delivery : customer_key
-    dim_order_status ||--o{ fact_delivery : order_status_key
-    dim_calendar ||--o{ fact_delivery : "order / delivered date keys"
-    dim_customer ||--o{ fact_reviews : customer_key
-    dim_order_status ||--o{ fact_reviews : order_status_key
-    dim_calendar ||--o{ fact_reviews : "order_date_key / review_date_key"
-    dim_customer ||--o{ fact_payments : customer_key
-    dim_order_status ||--o{ fact_payments : order_status_key
-    dim_calendar ||--o{ fact_payments : order_date_key
-    dim_payment_method ||--o{ fact_payments : payment_method_key
-```
+![Data Model](screenshots/04_data_model.png)
 
 | Table | Grain | Rows |
 |---|---|---:|
