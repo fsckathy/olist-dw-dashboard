@@ -50,7 +50,7 @@ flowchart LR
 | **bronze** | Raw landing zone, one table per CSV | All columns are 'NVARCHAR' and nullable, so values land without conversion errors |
 | **silver** | Cleaned, typed and keyed data | Proper types and natural PKs; geolocation outliers removed; one median point per zip; delivery split into approval, seller handling and carrier transit; review sentiment |
 | **gold** | Business-ready star schema | Surrogate keys, SCD type 1 dimensions, display-ready values |
-| **dw** | Power BI interface | One view per model table, no business logic |
+| **dw** | Power BI interface | One view per model table |
 | **etl** | Observability | Batch and table load logs written by every procedure |
 
 ## Data Model (gold)
@@ -113,30 +113,6 @@ The report has three 3 pages, linked by a navigation bar. Each visual has a dyna
 ## Explore the Report
 [View the Interactive Report](https://app.powerbi.com/view?r=eyJrIjoiNzkyZjI3ZmQtNTg2Mi00N2Y1LTgyZmEtN2ViY2FhMDA0ZDJhIiwidCI6IjhiNmM5NTljLWQ3YzQtNDA2Yy05ZTZiLWNhYzBiNzFkZTI0ZSJ9)
 
-## Repository Structure
-
-```
-olist-dw-dashboard/
-├── data/
-│   └── ibge_municipalities.json   # cached IBGE reference (Olist CSVs are not committed)
-├── screenshots/                   # dashboard page prints
-├── sql/
-│   ├── 00_init/                   # database, schemas, ETL monitoring tables and procedures
-│   ├── bronze/                    # DDL + bronze.load_bronze
-│   ├── silver/                    # DDL + silver.load_silver + IBGE city reference tables
-│   ├── gold/                      # star schema DDL + gold.load_gold
-│   ├── dw/                        # Power BI views
-│   ├── analysis.sql               # exploratory analysis of the dw facts (read-only)
-│   └── run_full_pipeline.sql      # runs bronze -> silver -> gold
-├── src/
-│   └── build_city_map.py          # IBGE city matching (pyodbc + rapidfuzz)
-└── tests/
-    ├── bronze_quality_checks.sql
-    ├── silver_quality_checks.sql
-    ├── gold_quality_checks.sql
-    └── test_build_city_map.py     # unit tests for the matching rules
-```
-
 ## Tools & Technologies
 
 | Area | Tools |
@@ -144,7 +120,7 @@ olist-dw-dashboard/
 | Database / ETL | SQL Server, T-SQL stored procedures, 'BULK INSERT' |
 | Data enrichment | Python 3.11, pyodbc, rapidfuzz, IBGE public API |
 | Testing | SQL quality check scripts, pytest |
-| BI | Power BI, DAX |
+| BI | Power BI, DAX, DAX Studio |
 
 ## Data Sources
 
