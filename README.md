@@ -54,7 +54,7 @@ flowchart LR
 | **etl** | Observability | Batch and table load logs written by every procedure |
 
 ## Data Model (gold)
-![Data Model](screenshots/04_data_model.png)
+![Data Model](screenshots/04_data_model.PNG)
 
 | Table | Grain | Rows |
 |---|---|---:|
