@@ -27,7 +27,7 @@ The warehouse is modeled to answer:
 - **Medallion pipeline in T-SQL.** One stored procedure per layer, all idempotent. Every run is logged in 'etl.batch_log' and 'etl.table_load_log'.
 - **Star schema.** 6 dimensions and 4 fact tables with integer surrogate keys, enforced foreign keys and 'yyyymmdd' date keys. Surrogate keys are deterministic: the same data always gets the same keys.
 - **City name standardization.** Cities are typed by hand in the source. A rule-based matcher (exact, alias, spelling skeleton, Jaro-Winkler fuzzy match, zip-prefix fallback) maps **98.9%** of 15,249 city/state/zip combinations to an official IBGE municipality.
-- **Data quality as code.** More than 70 checks across the three layers: row reconciliation, PK/FK integrity, domain and range rules, money totals reconciled, and date logic.
+- **Data quality as code.** Checks across the three layers: row reconciliation, PK/FK integrity, domain and range rules, money totals reconciled, and date logic.
 - **Thin BI layer.** Power BI reads from 'dw' views that expose only the columns the report uses.
 
 ## Architecture
